@@ -118,18 +118,18 @@
 
 // type aliases
 
-type NumberOrString = number | string;
-type NumberOrStringArray = (number | string)[];
+// type NumberOrString = number | string;
+// type NumberOrStringArray = (number | string)[];
 
-type Guitarist = {
-  name: string;
-  gender: string;
-  album: NumberOrStringArray;
-};
-type userId = NumberOrString;
+// type Guitarist = {
+//   name: string;
+//   gender: string;
+//   album: NumberOrStringArray;
+// };
+// type userId = NumberOrString;
 
 //Literal Types
-let myName: "utsav";
+// let myName: "utsav";
 // myName = 'utsav1'
 
 // let userName: "Utsav" | "Woyoo" | "Mocha" | "utsv123";
@@ -197,3 +197,163 @@ const addAllwithRest = (...num: number[]): number => {
   return num.reduce((prev, curr) => prev + curr);
 };
 logmsg(addAllwithRest(1, 2, 3, 4));
+
+const ErrorMsg = (msg: string): never => {
+  throw new Error(msg);
+};
+
+// const infi = () => {
+//   let u: number = 1;
+//   while (true) {
+//     u++;
+//     if (u > 100) break;
+//   }
+// };
+const isNum = (val: any): boolean => {
+  return typeof val == "number" ? true : false;
+};
+
+//use of the never type
+const NumberOrString = (val: number | string): string => {
+  if (typeof val === "string") return "string";
+  if (isNum(val)) return "number";
+  return ErrorMsg("This should never happen!");
+};
+
+//type assetions
+type one = string;
+type two = string | number;
+type three = "Hello";
+
+//converting more or less specific
+let a: one = "hello";
+let b = 10 as two; // less specific
+let c = a as three; // more specific
+
+const addOrConcat = (
+  a: number,
+  b: number,
+  c: "add" | "concat"
+): number | string => {
+  if (c === "add") return a + b;
+  return a + "" + b;
+};
+
+let myval: string = addOrConcat(2, 2, "concat") as string;
+let nextval: string = addOrConcat(2, 2, "add") as string;
+console.log(myval, " ", nextval);
+
+//The DOM
+//here we are defining more details abt the tags so it called assertion
+const img = document.querySelector("img") as HTMLImageElement;
+const myimg = document.getElementById("#img") as HTMLImageElement;
+
+// img.src;
+// myimg.src;
+
+//Classes
+class Coder {
+  constructor(
+    public readonly name: string,
+    public music: string,
+    private age: number,
+    protected lang: string = "typescript"
+  ) {}
+  public getAge() {
+    return `Hello, I'm ${this.age} years old`;
+  }
+}
+
+const c1 = new Coder("utsv", "party", 20, "typescript");
+
+console.log(c1.getAge());
+// console.log(c1.age);
+console.log(c1.music);
+
+class webDev extends Coder {
+  constructor(
+    public computer: string,
+    name: string,
+    music: string,
+    age: number
+  ) {
+    super(name, music, age);
+    this.computer = computer;
+  }
+  public getLang() {
+    return `I write ${this.lang} language currently`;
+  }
+}
+
+const w1 = new webDev("Mac", "usv", "Hip-Hop", 20);
+console.log(w1.getLang());
+// console.log(w1.lang);
+
+interface Musician {
+  name: string;
+  instrument: string;
+  play(action: string): string;
+}
+
+class Guitarist implements Musician {
+  name: string;
+  instrument: string;
+
+  constructor(name: string, instrument: string) {
+    this.name = name;
+    this.instrument = instrument;
+  }
+  play(action: string): string {
+    return `${this.name} ${action} the ${this.instrument}`;
+  }
+}
+
+const g1 = new Guitarist("Utsav", "Guitar");
+console.log(g1.play("Strums"));
+
+class Peep {
+  static count: number = 0;
+
+  getCount(): number {
+    return Peep.count;
+  }
+  public id: number;
+
+  constructor(public name: string) {
+    this.name = name;
+    this.id = ++Peep.count;
+  }
+}
+const p1 = new Peep("utsav");
+const p2 = new Peep("utsav1");
+const p3 = new Peep("utsav2");
+
+console.log(p1.getCount());
+console.log(p1.id);
+console.log(p2.name);
+
+class Bands {
+  private dataState: string[];
+
+  constructor() {
+    this.dataState = [];
+  }
+
+  public set data(val: string[]) {
+    if (Array.isArray(val) && val.every((ele) => typeof ele === "string")) {
+      this.dataState = val;
+      return;
+    } else throw new Error("Params is not an array of strings");
+  }
+
+  public get data(): string[] {
+    return this.dataState;
+  }
+}
+
+const myBands = new Bands();
+myBands.data = ["Utsav", "Led zep"];
+console.log(myBands.data);
+
+myBands.data = [...myBands.data, "abcd"];
+console.log(myBands.data);
