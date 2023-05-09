@@ -260,6 +260,26 @@ const p3 = new Peep("utsav2");
 console.log(p1.getCount());
 console.log(p1.id);
 console.log(p2.name);
+// class Bands {
+//   private dataState: string[];
+//   constructor() {
+//     this.dataState = [];
+//   }
+//   public set data(val: string[]) {
+//     if (Array.isArray(val) && val.every((ele) => typeof ele === "string")) {
+//       this.dataState = val;
+//       return;
+//     } else throw new Error("Params is not an array of strings");
+//   }
+//   public get data(): string[] {
+//     return this.dataState;
+//   }
+// }
+// const myBands = new Bands();
+// myBands.data = ["Utsav", "Led zep"];
+// console.log(myBands.data);
+// myBands.data = [...myBands.data, "abcd"];
+// console.log(myBands.data);
 class Bands {
     constructor() {
         this.dataState = [];
@@ -269,13 +289,51 @@ class Bands {
             this.dataState = val;
             return;
         }
-        else
-            throw new Error("Params is not an array of strings");
+        else {
+            throw new Error("error");
+        }
     }
     get data() {
         return this.dataState;
     }
 }
-const myBands = new Bands();
-myBands.data = ["Utsav", "Led zep"];
-console.log(myBands.data);
+const b1 = new Bands();
+b1.data = ["utsav", "123"];
+console.log(b1.data);
+//Index Signatures
+//Generics
+//T means it works with any type whether its string or number or boolean
+const Echo = (arg) => arg;
+const isObj = (arg) => {
+    return typeof arg === "object" && !Array.isArray(arg) && arg != null;
+};
+console.log(isObj(true));
+console.log(isObj("utsav"));
+console.log(isObj([1, 2, 3]));
+console.log(isObj({
+    name: "utsav",
+    age: 20,
+}));
+console.log(isObj(null));
+const processUser = (user) => {
+    return user;
+};
+console.log(processUser({
+    id: 1,
+    name: "utsav",
+    age: 20,
+}));
+const getUserProperty = (users, key) => {
+    return users.map((user) => user[key]);
+};
+const userArray = [
+    {
+        id: 1,
+        name: "utsv",
+        username: "uts@123",
+    },
+];
+console.log(getUserProperty(userArray, "id"));
+console.log(getUserProperty(userArray, "name"));
+console.log(getUserProperty(userArray, "username"));
+//Utility types

@@ -332,8 +332,34 @@ console.log(p1.getCount());
 console.log(p1.id);
 console.log(p2.name);
 
+// class Bands {
+//   private dataState: string[];
+
+//   constructor() {
+//     this.dataState = [];
+//   }
+
+//   public set data(val: string[]) {
+//     if (Array.isArray(val) && val.every((ele) => typeof ele === "string")) {
+//       this.dataState = val;
+//       return;
+//     } else throw new Error("Params is not an array of strings");
+//   }
+
+//   public get data(): string[] {
+//     return this.dataState;
+//   }
+// }
+
+// const myBands = new Bands();
+// myBands.data = ["Utsav", "Led zep"];
+// console.log(myBands.data);
+
+// myBands.data = [...myBands.data, "abcd"];
+// console.log(myBands.data);
+
 class Bands {
-  private dataState: string[];
+  public dataState: string[];
 
   constructor() {
     this.dataState = [];
@@ -343,17 +369,109 @@ class Bands {
     if (Array.isArray(val) && val.every((ele) => typeof ele === "string")) {
       this.dataState = val;
       return;
-    } else throw new Error("Params is not an array of strings");
+    } else {
+      throw new Error("error");
+    }
   }
-
   public get data(): string[] {
     return this.dataState;
   }
 }
+const b1 = new Bands();
+b1.data = ["utsav", "123"];
+console.log(b1.data);
 
-const myBands = new Bands();
-myBands.data = ["Utsav", "Led zep"];
-console.log(myBands.data);
+//Index Signatures
 
-myBands.data = [...myBands.data, "abcd"];
-console.log(myBands.data);
+//Generics
+//T means it works with any type whether its string or number or boolean
+const Echo = <T>(arg: T): T => arg;
+
+const isObj = <T>(arg: T): Boolean => {
+  return typeof arg === "object" && !Array.isArray(arg) && arg != null;
+};
+console.log(isObj(true));
+console.log(isObj("utsav"));
+console.log(isObj([1, 2, 3]));
+console.log(
+  isObj({
+    name: "utsav",
+    age: 20,
+  })
+);
+console.log(isObj(null));
+
+// const isTrue = <T>(arg: T): { arg: T; is: Boolean } => {
+//   if (Array.isArray(arg) && arg.length) {
+//     return { arg, is: false };
+//   }
+//   if (isObj(arg) && Object.keys(arg as keyof T).length) {
+//     return { arg, is: false };
+//   }
+//   return { arg, is: !!arg };
+// };
+
+// console.log(isTrue(false));
+// console.log(isTrue(0));
+// console.log(isTrue(true));
+// console.log(isTrue(1));
+// console.log(isTrue("utsv"));
+// console.log(isTrue(""));
+// console.log(isTrue(null));
+// console.log(isTrue(undefined));
+// console.log(isTrue({}));
+// console.log(isTrue({ name: "utsv" }));
+// console.log(isTrue([]));
+// console.log(isTrue([1, 2, 3]));
+// console.log(isTrue(NaN));
+// console.log(isTrue(-0));
+
+// interface BoolCheck<T> {
+//   value: T;
+//   is: boolean;
+// }
+
+// const checkBoolVal = <T>(arg: T): BoolCheck<T> => {
+//   if (Array.isArray(arg) && arg.length) {
+//     return { value: arg, is: false };
+//   }
+//   if (isObj(arg) && Object.keys(arg as keyof T).length) {
+//     return { value: arg, is: false };
+//   }
+//   return { value: arg, is: !!arg };
+// };
+interface HasID {
+  id: number;
+}
+const processUser = <T extends HasID>(user: T): T => {
+  return user;
+};
+
+console.log(
+  processUser({
+    id: 1,
+    name: "utsav",
+    age: 20,
+  })
+);
+
+const getUserProperty = <T extends HasID, K extends keyof T>(
+  users: T[],
+  key: K
+): T[K][] => {
+  return users.map((user) => user[key]);
+};
+
+const userArray = [
+  {
+    id: 1,
+    name: "utsv",
+    username: "uts@123",
+  },
+];
+
+console.log(getUserProperty(userArray, "id"));
+console.log(getUserProperty(userArray, "name"));
+console.log(getUserProperty(userArray, "username"));
+
+//Utility types
